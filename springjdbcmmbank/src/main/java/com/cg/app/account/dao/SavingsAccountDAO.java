@@ -1,6 +1,5 @@
 package com.cg.app.account.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.cg.app.account.SavingsAccount;
@@ -8,35 +7,35 @@ import com.cg.app.exception.AccountNotFoundException;
 
 public interface SavingsAccountDAO {
 	
-	SavingsAccount createNewAccount(SavingsAccount account) throws ClassNotFoundException, SQLException;
+	SavingsAccount createNewAccount(SavingsAccount account);
 	
-	SavingsAccount getAccountById(int accountNumber) throws ClassNotFoundException, SQLException, AccountNotFoundException;
+	SavingsAccount getAccountById(int accountNumber)throws AccountNotFoundException;
 	
-	SavingsAccount deleteAccount(int accountNumber) throws ClassNotFoundException, SQLException, AccountNotFoundException;
+	SavingsAccount deleteAccount(int accountNumber) throws AccountNotFoundException;
 	
-	List<SavingsAccount> getAllSavingsAccount() throws ClassNotFoundException, SQLException;
+	List<SavingsAccount> getAllSavingsAccount();
 	
-	void updateBalance(int accountNumber, double currentBalance) throws ClassNotFoundException, SQLException;
+	void updateBalance(int accountNumber, double currentBalance);
 	
-	double checkBalance(int accountNumber) throws AccountNotFoundException, ClassNotFoundException, SQLException;
+	double checkBalance(int accountNumber) throws AccountNotFoundException;
 	
-	boolean updateAccountType(SavingsAccount account) throws SQLException, ClassNotFoundException;
+	boolean updateAccountType(SavingsAccount account);
 	
-	List<SavingsAccount> sortByAccountHolderName() throws SQLException, ClassNotFoundException;
+	List<SavingsAccount> sortByAccountHolderName();
 	
-	List<SavingsAccount> sortByBalanceRange(int minimumBalance, int maximumBalance) throws SQLException, ClassNotFoundException;
+	List<SavingsAccount> sortByBalanceRange(int minimumBalance, int maximumBalance);
 	
-	List<SavingsAccount> sortByAccountHolderNameDescending() throws SQLException, ClassNotFoundException;
+	List<SavingsAccount> sortByAccountHolderNameDescending();
 	
-	List<SavingsAccount> sortByBalanceRangeDescending(int minimumBalanceDescending, int maximumBalanceDescending) throws ClassNotFoundException, SQLException;
+	List<SavingsAccount> sortByBalanceRangeDescending(int minimumBalanceDescending, int maximumBalanceDescending);
 	
-	List<SavingsAccount> getAccountByName(String accountHolderName) throws SQLException, AccountNotFoundException, ClassNotFoundException;
+	List<SavingsAccount> getAccountByName(String accountHolderName) throws AccountNotFoundException;
 	
-	List<SavingsAccount> getAllBelowBalance(int balanceNumber) throws SQLException, ClassNotFoundException;
+	List<SavingsAccount> getAllBelowBalance(int balanceNumber);
 	
-	List<SavingsAccount> getAllAboveBalance(int balanceNumber)throws SQLException, ClassNotFoundException;
+	List<SavingsAccount> getAllAboveBalance(int balanceNumber);
 
-	List<SavingsAccount> sortByAccountBalance() throws ClassNotFoundException, SQLException;
+	List<SavingsAccount> sortByAccountBalance() ;
 
-	List<SavingsAccount> sortByAccountBalanceDescending() throws ClassNotFoundException, SQLException;
+	List<SavingsAccount> sortByAccountBalanceDescending();
 }

@@ -1,10 +1,8 @@
 package com.cg.app.account.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,13 +11,12 @@ import com.cg.app.account.mapper.SavingsAccountDetailsMapper;
 import com.cg.app.exception.AccountNotFoundException;
 
 @Repository
-@Primary
 public class SavingsAccountJDAOImpl implements SavingsAccountDAO {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public SavingsAccount createNewAccount(SavingsAccount account) throws ClassNotFoundException, SQLException {
+	public SavingsAccount createNewAccount(SavingsAccount account){
 		jdbcTemplate.update("INSERT INTO ACCOUNT VALUES(?,?,?,?,?,?)",
 				new Object[] { account.getBankAccount().getAccountNumber(),
 						account.getBankAccount().getAccountHolderName(), account.getBankAccount().getAccountBalance(),
@@ -27,12 +24,12 @@ public class SavingsAccountJDAOImpl implements SavingsAccountDAO {
 		return account;
 	}
 
-	public List<SavingsAccount> getAllSavingsAccount() throws ClassNotFoundException, SQLException {
+	public List<SavingsAccount> getAllSavingsAccount()  {
 
 		return jdbcTemplate.query("SELECT * FROM ACCOUNT", new SavingsAccountDetailsMapper());
 	}
 
-	public void updateBalance(int accountNumber, double currentBalance) throws ClassNotFoundException, SQLException {
+	public void updateBalance(int accountNumber, double currentBalance) {
 
 		jdbcTemplate.update("UPDATE ACCOUNT SET account_bal=? where account_id=?",
 				new Object[] { currentBalance, accountNumber });
@@ -40,7 +37,7 @@ public class SavingsAccountJDAOImpl implements SavingsAccountDAO {
 	}
 
 	public SavingsAccount getAccountById(int accountNumber)
-			throws ClassNotFoundException, SQLException, AccountNotFoundException {
+			throws  AccountNotFoundException {
 
 		return jdbcTemplate.queryForObject("SELECT * FROM account where account_id=?", new Object[] { accountNumber },
 				new SavingsAccountDetailsMapper());
@@ -48,20 +45,20 @@ public class SavingsAccountJDAOImpl implements SavingsAccountDAO {
 	}
 
 	public SavingsAccount deleteAccount(int accountNumber)
-			throws ClassNotFoundException, SQLException, AccountNotFoundException {
+			throws AccountNotFoundException {
 
 		jdbcTemplate.update("DELETE FROM account WHERE account_id=?", new Object[] { accountNumber });
 		return null;
 	}
 
 	public double checkBalance(int accountNumber)
-			throws AccountNotFoundException, ClassNotFoundException, SQLException {
+			throws AccountNotFoundException{
 
 		return jdbcTemplate.queryForObject("SELECT account_bal FROM account where account_id=?",
 				new Object[] { accountNumber }, Double.class);
 	}
 
-	public boolean updateAccountType(SavingsAccount account) throws SQLException, ClassNotFoundException {
+	public boolean updateAccountType(SavingsAccount account){
 
 		jdbcTemplate.update("UPDATE ACCOUNT SET account_hn=?,salary=? where account_id=?",
 				new Object[] { account.getBankAccount().getAccountHolderName(), account.isSalary(),
@@ -70,55 +67,53 @@ public class SavingsAccountJDAOImpl implements SavingsAccountDAO {
 		return false;
 	}
 
-	public List<SavingsAccount> sortByAccountHolderName() throws SQLException, ClassNotFoundException {
+	public List<SavingsAccount> sortByAccountHolderName() {
 
 		return jdbcTemplate.query("SELECT * FROM account ORDER BY account_hn", new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> sortByBalanceRange(int minimumBalance, int maximumBalance)
-			throws SQLException, ClassNotFoundException {
+	public List<SavingsAccount> sortByBalanceRange(int minimumBalance, int maximumBalance){
 
 		return jdbcTemplate.query("SELECT * FROM account WHERE account_bal BETWEEN ? and ? ORDER BY account_bal",
 				new Object[] { minimumBalance, maximumBalance }, new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> sortByAccountHolderNameDescending() throws SQLException, ClassNotFoundException {
+	public List<SavingsAccount> sortByAccountHolderNameDescending(){
 
 		return jdbcTemplate.query("SELECT * FROM account ORDER BY account_hn DESC", new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> sortByBalanceRangeDescending(int minimumBalanceDescending, int maximumBalanceDescending)
-			throws ClassNotFoundException, SQLException {
+	public List<SavingsAccount> sortByBalanceRangeDescending(int minimumBalanceDescending, int maximumBalanceDescending){
 
 		return jdbcTemplate.query("SELECT * FROM account WHERE account_bal BETWEEN ? and ? ORDER BY account_bal DESC",
 				new Object[] { minimumBalanceDescending, maximumBalanceDescending }, new SavingsAccountDetailsMapper());
 	}
 
 	public List<SavingsAccount> getAccountByName(String accountHolderName)
-			throws SQLException, AccountNotFoundException, ClassNotFoundException {
+			throws AccountNotFoundException{
 
 		return jdbcTemplate.query("SELECT * FROM account where account_hn=?", new Object[] { accountHolderName },
 				new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> getAllBelowBalance(int balanceNumber) throws SQLException, ClassNotFoundException {
+	public List<SavingsAccount> getAllBelowBalance(int balanceNumber) {
 
 		return jdbcTemplate.query("SELECT * FROM ACCOUNT WHERE account_bal<=?", new Object[] { balanceNumber },
 				new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> getAllAboveBalance(int balanceNumber) throws SQLException, ClassNotFoundException {
+	public List<SavingsAccount> getAllAboveBalance(int balanceNumber) {
 
 		return jdbcTemplate.query("SELECT * FROM ACCOUNT WHERE account_bal>=?", new Object[] { balanceNumber },
 				new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> sortByAccountBalance() throws ClassNotFoundException, SQLException {
+	public List<SavingsAccount> sortByAccountBalance(){
 
 		return jdbcTemplate.query("SELECT * FROM account ORDER BY account_bal", new SavingsAccountDetailsMapper());
 	}
 
-	public List<SavingsAccount> sortByAccountBalanceDescending() throws ClassNotFoundException, SQLException {
+	public List<SavingsAccount> sortByAccountBalanceDescending() {
 
 		return jdbcTemplate.query("SELECT * FROM account ORDER BY account_bal DESC", new SavingsAccountDetailsMapper());
 	}
